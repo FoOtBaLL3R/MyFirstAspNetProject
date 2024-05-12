@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyFirstProject.Contracts;
 using MyFirstProject.DataAccess;
 using MyFirstProject.Models;
+using System.Linq.Expressions;
 
 namespace MyFirstProject.Controllers
 {
@@ -37,16 +39,22 @@ namespace MyFirstProject.Controllers
                 .Where(p => !string.IsNullOrWhiteSpace(request.Search) &&
                 p.Name.ToLower().Contains(request.Search.ToLower()));
 
-            if(request.SortOrder == "desc")
+            Expression<Func<Note, object>> selectorKey = request.SortItem?.ToLower() switch
             {
-                notesQuery = notesQuery.OrderByDescending(p => p.CreatedAt);
-            }
-            else
-            {
-                notesQuery = notesQuery.OrderBy(p => p.CreatedAt);
-            }
+                "date" => note => note.CreatedAt,
+                "name" => note => note.Name,
+                _ => note => note.Id,
+            };
 
-            var notes = await notesQuery.ToListAsync(ct);
+            notesQuery = request.SortOrder == "desc" 
+                ? notesQuery.OrderByDescending(selectorKey) 
+                : notesQuery.OrderBy(selectorKey);
+
+            var noteDtos = await notesQuery
+                .Select(p => new NoteDto(p.Id, p.Name, p.Description, p.CreatedAt))
+                .ToListAsync(cancellationToken: ct);
+
+            return Ok(new GetNotesResponse(noteDtos));
         }
     }
 }
