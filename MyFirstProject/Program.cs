@@ -3,7 +3,7 @@ using MyFirstProject.DataAccess;
 
 internal class Program
 {
-    private static async void Main(string[] args)
+    private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddSwaggerGen();
@@ -13,8 +13,9 @@ internal class Program
         var app = builder.Build();
 
         using var scope = app.Services.CreateScope();
-        await using var dbContext = scope.ServiceProvider.GetRequiredService<MyNotesDbContext>();
-        await dbContext.Database.EnsureCreatedAsync();
+        Task task = MyAsyncMethod(scope);
+        task.Wait();
+        
 
         if (app.Environment.IsDevelopment())
         {
@@ -26,5 +27,12 @@ internal class Program
         app.MapGet("/", () => "Hello World!");
 
         app.Run();
+    }
+
+    
+    private static async Task MyAsyncMethod(IServiceScope scpe)
+    {
+        await using var dbContext = scpe.ServiceProvider.GetRequiredService<MyNotesDbContext>();
+        await dbContext.Database.EnsureCreatedAsync();
     }
 }
