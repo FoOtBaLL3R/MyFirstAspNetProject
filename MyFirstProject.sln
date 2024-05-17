@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFirstProject", "MyFirstProject\MyFirstProject.csproj", "{73715B99-A7C4-46F0-8764-5E920EA96CEC}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FCD2EEF8-BC23-406B-835A-252F9258D75D}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{120184C9-7729-4454-BCC4-5092D7591C7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,14 +18,14 @@ Global
 		{73715B99-A7C4-46F0-8764-5E920EA96CEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73715B99-A7C4-46F0-8764-5E920EA96CEC}.NoVariablesDefault|Any CPU.ActiveCfg = Release|Any CPU
 		{73715B99-A7C4-46F0-8764-5E920EA96CEC}.NoVariablesDefault|Any CPU.Build.0 = Release|Any CPU
-		{73715B99-A7C4-46F0-8764-5E920EA96CEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{73715B99-A7C4-46F0-8764-5E920EA96CEC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FCD2EEF8-BC23-406B-835A-252F9258D75D}.Debug|Any CPU.ActiveCfg = NoVariablesDefault
-		{FCD2EEF8-BC23-406B-835A-252F9258D75D}.Debug|Any CPU.Build.0 = NoVariablesDefault
-		{FCD2EEF8-BC23-406B-835A-252F9258D75D}.NoVariablesDefault|Any CPU.ActiveCfg = NoVariablesDefault
-		{FCD2EEF8-BC23-406B-835A-252F9258D75D}.NoVariablesDefault|Any CPU.Build.0 = NoVariablesDefault
-		{FCD2EEF8-BC23-406B-835A-252F9258D75D}.Release|Any CPU.ActiveCfg = NoVariablesDefault
-		{FCD2EEF8-BC23-406B-835A-252F9258D75D}.Release|Any CPU.Build.0 = NoVariablesDefault
+		{73715B99-A7C4-46F0-8764-5E920EA96CEC}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{73715B99-A7C4-46F0-8764-5E920EA96CEC}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{120184C9-7729-4454-BCC4-5092D7591C7E}.Debug|Any CPU.ActiveCfg = NoVariablesDefault
+		{120184C9-7729-4454-BCC4-5092D7591C7E}.Debug|Any CPU.Build.0 = NoVariablesDefault
+		{120184C9-7729-4454-BCC4-5092D7591C7E}.NoVariablesDefault|Any CPU.ActiveCfg = NoVariablesDefault
+		{120184C9-7729-4454-BCC4-5092D7591C7E}.NoVariablesDefault|Any CPU.Build.0 = NoVariablesDefault
+		{120184C9-7729-4454-BCC4-5092D7591C7E}.Release|Any CPU.ActiveCfg = NoVariablesDefault
+		{120184C9-7729-4454-BCC4-5092D7591C7E}.Release|Any CPU.Build.0 = NoVariablesDefault
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,10 +2,10 @@
 {
     public class Note
     {
-        public Note(string name, string descripption)
+        public Note(string name, string description)
         {
             Name = name;
-            Description = descripption;
+            Description = description;
             CreatedAt = DateTime.Now;
         }
         public Guid Id { get; init; }

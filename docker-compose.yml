@@ -6,21 +6,27 @@ services:
     build:
       context: .
       dockerfile: MyFirstProject/Dockerfile
- 
+
+  
   db:
-    image: postgres
+    container_name: db_project1
+    image: postgres:16.3
     restart: always
     ports:  
-    - "5433:5432"
+      - "5432:5432"
     # set shared memory limit when using docker-compose
     #shm_size: 128mb
     # or set shared memory limit when deploy via swarm stack
-    #volumes: "/var/lib/postgresql/data"
+    #volumes: 
+     #- "/var/lib/postgresql/data"
     #  - type: tmpfs
          #/var/lib/postgresql/data 
     #    tmpfs:
     #      size: 134217728 # 128*2^20 bytes = 128Mb
     environment:
-      POSTGRES_DB: my_notes
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      - POSTGRES_DB=my_notes
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      #POSTGRES_DB: my_notes
+      #POSTGRES_USER: postgres
+      #POSTGRES_PASSWORD: postgres
