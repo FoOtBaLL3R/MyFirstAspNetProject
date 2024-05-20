@@ -33,10 +33,10 @@ namespace MyFirstProject.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(GetNotesRequest request, CancellationToken ct)
+        public async Task<IActionResult> Get([FromQuery] GetNotesRequest request, CancellationToken ct)
         {
             var notesQuery = _dbContext.Notes
-                .Where(p => !string.IsNullOrWhiteSpace(request.Search) &&
+                .Where(p => string.IsNullOrWhiteSpace(request.Search) ||
                 p.Name.ToLower().Contains(request.Search.ToLower()));
 
             Expression<Func<Note, object>> selectorKey = request.SortItem?.ToLower() switch
