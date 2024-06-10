@@ -33,7 +33,7 @@ namespace MyFirstProject.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] GetNotesRequest request, CancellationToken ct)
+        public async Task<IActionResult> Get([FromQuery] GetNotesRequest request, CancellationToken ct, int page = 1, int pageSize = 3)
         {
             var notesQuery = _dbContext.Notes
                 .Where(p => string.IsNullOrWhiteSpace(request.Search) ||
@@ -50,11 +50,21 @@ namespace MyFirstProject.Controllers
                 ? notesQuery.OrderByDescending(selectorKey) 
                 : notesQuery.OrderBy(selectorKey);
 
+            var totalCount = notesQuery.Count();
+            var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
             var noteDtos = await notesQuery
                 .Select(p => new NoteDto(p.Id, p.Name, p.Description, p.CreatedAt))
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync(cancellationToken: ct);
 
-            return Ok(new GetNotesResponse(noteDtos));
+
+            //var notes = noteDtos
+            //    .Skip((page - 1) * pageSize)
+            //    .Take(pageSize)
+            //    .ToList();
+
+            return Ok(new GetNotesResponse(noteDtos, totalPages));
         }
     }
 }

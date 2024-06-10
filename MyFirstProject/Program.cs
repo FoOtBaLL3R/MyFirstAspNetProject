@@ -10,6 +10,16 @@ internal class Program
         builder.Services.AddControllers();
         builder.Services.AddScoped<MyNotesDbContext>();
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.WithOrigins("http://localhost:5173");
+                policy.AllowAnyHeader();
+                policy.AllowAnyMethod();
+            });
+        });
+
         var app = builder.Build();
 
         using var scope = app.Services.CreateScope();
@@ -22,9 +32,11 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseCors();
         app.MapControllers();
 
-        app.MapGet("/", () => "Hello World!");
+        //app.MapGet("/", () => "Hello World!");
 
         app.Run();
     }

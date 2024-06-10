@@ -1,5 +1,5 @@
 ﻿namespace MyFirstProject.Contracts
 {
-    public record GetNotesResponse(List<NoteDto> notes);
+    public record GetNotesResponse(List<NoteDto> notes, int totalPages);
     
 }
