@@ -36,6 +36,7 @@ namespace MyFirstProject.Controllers
         public async Task<IActionResult> Get([FromQuery] GetNotesRequest request, CancellationToken ct, int page = 1, int pageSize = 3)
         {
             var notesQuery = _dbContext.Notes
+                .AsNoTracking()
                 .Where(p => string.IsNullOrWhiteSpace(request.Search) ||
                 p.Name.ToLower().Contains(request.Search.ToLower()));
 
@@ -54,17 +55,38 @@ namespace MyFirstProject.Controllers
             var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
             var noteDtos = await notesQuery
                 .Select(p => new NoteDto(p.Id, p.Name, p.Description, p.CreatedAt))
+                .AsNoTracking()
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync(cancellationToken: ct);
-
-
-            //var notes = noteDtos
-            //    .Skip((page - 1) * pageSize)
-            //    .Take(pageSize)
-            //    .ToList();
+                .ToListAsync(cancellationToken: ct);            
 
             return Ok(new GetNotesResponse(noteDtos, totalPages));
         }
+
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] CreateNoteRequest request, CancellationToken ct)
+        {
+            await _dbContext.Notes
+                .Where(n => n.Id == id)
+                .ExecuteUpdateAsync(s => s
+                .SetProperty(n => n.Name, n => request.Name)
+                .SetProperty(n => n.Description, n => request.Description)
+                );
+            
+            return Ok();
+
+        }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _dbContext.Notes
+                .Where(n => n.Id == id)
+                .ExecuteDeleteAsync();
+
+            return Ok();
+
+        }
+
     }
 }
