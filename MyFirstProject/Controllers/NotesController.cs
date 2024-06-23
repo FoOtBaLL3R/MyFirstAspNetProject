@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyFirstProject.Contracts;
-using MyFirstProject.DataAccess;
-using MyFirstProject.Models;
-using System.Linq.Expressions;
+using MyFirstProject.Core.Abstractions;
+using MyFirstProject.Core.Models;
 
 namespace MyFirstProject.Controllers
 {
@@ -12,81 +9,54 @@ namespace MyFirstProject.Controllers
     [Route("[controller]")]
     public class NotesController : ControllerBase
     {
-        private readonly MyNotesDbContext _dbContext;
+        private readonly INotesService _notesService;
 
-        public NotesController(MyNotesDbContext dbContext)
+        public NotesController(INotesService notesService)
         {
-            _dbContext = dbContext;
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateNoteRequest request, CancellationToken ct)
-        {
-            var note = new Note(request.Name, request.Description);
-
-            await _dbContext.Notes.AddAsync(note, ct);
-            await _dbContext.SaveChangesAsync();
-
-
-            return Ok();
-
+            _notesService = notesService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] GetNotesRequest request, CancellationToken ct, int page = 1, int pageSize = 3)
+        public async Task<ActionResult<List<NotesResponse>>> GetNotes()
         {
-            var notesQuery = _dbContext.Notes
-                .AsNoTracking()
-                .Where(p => string.IsNullOrWhiteSpace(request.Search) ||
-                p.Name.ToLower().Contains(request.Search.ToLower()));
+            var notes = await _notesService.GetAllNotes();
 
-            Expression<Func<Note, object>> selectorKey = request.SortItem?.ToLower() switch
+            var response = notes.Select(n => new NotesResponse(n.Id, n.Name, n.Description, n.CreatedAt));
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Guid>> CreateNote([FromBody] NotesRequest request)
+        {
+            var (note, error) = Note.Create(
+                Guid.NewGuid(),
+                request.Name,
+                request.Description
+                );
+
+            if (!string.IsNullOrEmpty(error))
             {
-                "date" => note => note.CreatedAt,
-                "name" => note => note.Name,
-                _ => note => note.Id,
-            };
+                return BadRequest(error);
+            }
 
-            notesQuery = request.SortOrder == "desc" 
-                ? notesQuery.OrderByDescending(selectorKey) 
-                : notesQuery.OrderBy(selectorKey);
+            var noteId = await _notesService.CreateNote(note);
 
-            var totalCount = notesQuery.Count();
-            var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
-            var noteDtos = await notesQuery
-                .Select(p => new NoteDto(p.Id, p.Name, p.Description, p.CreatedAt))
-                .AsNoTracking()
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync(cancellationToken: ct);            
-
-            return Ok(new GetNotesResponse(noteDtos, totalPages));
+            return Ok(noteId);
         }
 
         [HttpPut("{id:guid}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] CreateNoteRequest request, CancellationToken ct)
+        public async Task<ActionResult<Guid>> UpdateNote(Guid id, [FromBody] NotesRequest request)
         {
-            await _dbContext.Notes
-                .Where(n => n.Id == id)
-                .ExecuteUpdateAsync(s => s
-                .SetProperty(n => n.Name, n => request.Name)
-                .SetProperty(n => n.Description, n => request.Description)
-                );
-            
-            return Ok();
+            var noteId = await _notesService.UpdateNote(id, request.Name, request.Description, request.CreatedAt);
 
+            return Ok(noteId);
         }
 
         [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<ActionResult<Guid>> DeleteNote(Guid id)
         {
-            await _dbContext.Notes
-                .Where(n => n.Id == id)
-                .ExecuteDeleteAsync();
-
-            return Ok();
-
+            return Ok(await _notesService.DeleteNote(id));
         }
-
     }
 }

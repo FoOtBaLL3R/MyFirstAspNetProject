@@ -7,6 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFirstProject", "MyFirstPr
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{120184C9-7729-4454-BCC4-5092D7591C7E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFirstProject.DataAccess.Postgress", "MyFirstProject.DataAccess.Postgress\MyFirstProject.DataAccess.Postgress.csproj", "{12CE5709-DBE3-461E-9EA6-4D5A4D1070F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFirstProject.Core", "MyFirstProject.Core\MyFirstProject.Core.csproj", "{8C042C61-DA88-46C4-B435-C108B5CCB60C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFirstProject.Application", "MyFirstProject.Application\MyFirstProject.Application.csproj", "{D484D755-A0F3-42B7-8EEE-564F4A6B9750}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +32,24 @@ Global
 		{120184C9-7729-4454-BCC4-5092D7591C7E}.NoVariablesDefault|Any CPU.Build.0 = NoVariablesDefault
 		{120184C9-7729-4454-BCC4-5092D7591C7E}.Release|Any CPU.ActiveCfg = NoVariablesDefault
 		{120184C9-7729-4454-BCC4-5092D7591C7E}.Release|Any CPU.Build.0 = NoVariablesDefault
+		{12CE5709-DBE3-461E-9EA6-4D5A4D1070F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12CE5709-DBE3-461E-9EA6-4D5A4D1070F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12CE5709-DBE3-461E-9EA6-4D5A4D1070F2}.NoVariablesDefault|Any CPU.ActiveCfg = Debug|Any CPU
+		{12CE5709-DBE3-461E-9EA6-4D5A4D1070F2}.NoVariablesDefault|Any CPU.Build.0 = Debug|Any CPU
+		{12CE5709-DBE3-461E-9EA6-4D5A4D1070F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12CE5709-DBE3-461E-9EA6-4D5A4D1070F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C042C61-DA88-46C4-B435-C108B5CCB60C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C042C61-DA88-46C4-B435-C108B5CCB60C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C042C61-DA88-46C4-B435-C108B5CCB60C}.NoVariablesDefault|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C042C61-DA88-46C4-B435-C108B5CCB60C}.NoVariablesDefault|Any CPU.Build.0 = Debug|Any CPU
+		{8C042C61-DA88-46C4-B435-C108B5CCB60C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C042C61-DA88-46C4-B435-C108B5CCB60C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D484D755-A0F3-42B7-8EEE-564F4A6B9750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D484D755-A0F3-42B7-8EEE-564F4A6B9750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D484D755-A0F3-42B7-8EEE-564F4A6B9750}.NoVariablesDefault|Any CPU.ActiveCfg = Debug|Any CPU
+		{D484D755-A0F3-42B7-8EEE-564F4A6B9750}.NoVariablesDefault|Any CPU.Build.0 = Debug|Any CPU
+		{D484D755-A0F3-42B7-8EEE-564F4A6B9750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D484D755-A0F3-42B7-8EEE-564F4A6B9750}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

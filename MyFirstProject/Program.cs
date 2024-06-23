@@ -1,5 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MyFirstProject.DataAccess;
+using MyFirstProject.Application.Services;
+using MyFirstProject.Core.Abstractions;
+using MyFirstProject.DataAccess.Postgress;
+using MyFirstProject.DataAccess.Postgress.Repositories;
 
 internal class Program
 {
@@ -8,7 +12,13 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddSwaggerGen();
         builder.Services.AddControllers();
-        builder.Services.AddScoped<MyNotesDbContext>();
+
+        builder.Services.AddDbContext<MyNotesDbContext>(
+            options =>
+            {
+                options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(MyNotesDbContext)));
+            }
+            );
 
         builder.Services.AddCors(options =>
         {
@@ -20,13 +30,11 @@ internal class Program
             });
         });
 
+        builder.Services.AddScoped<INotesService, NotesService>();
+        builder.Services.AddScoped<INotesRepository, NotesRepository>();
+
         var app = builder.Build();
-
-        using var scope = app.Services.CreateScope();
-        Task task = MyAsyncMethod(scope);
-        task.Wait();
         
-
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -42,9 +50,5 @@ internal class Program
     }
 
     
-    private static async Task MyAsyncMethod(IServiceScope scpe)
-    {
-        await using var dbContext = scpe.ServiceProvider.GetRequiredService<MyNotesDbContext>();
-        await dbContext.Database.EnsureCreatedAsync();
-    }
+    
 }
