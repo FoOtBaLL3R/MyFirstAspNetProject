@@ -32,7 +32,8 @@ namespace MyFirstProject.Controllers
             var (note, error) = Note.Create(
                 Guid.NewGuid(),
                 request.Name,
-                request.Description
+                request.Description,
+                request.CreatedAt
                 );
 
             if (!string.IsNullOrEmpty(error))

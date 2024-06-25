@@ -6,12 +6,12 @@
         
         public const int MAX_DESC_LENGTH = 256;
         
-        private Note(Guid id, string name, string description)
+        private Note(Guid id, string name, string description, DateTime createdAt)
         {
             Id = id;
             Name = name;
             Description = description;
-            CreatedAt = DateTime.UtcNow;
+            CreatedAt = createdAt;
         }
         public Guid Id { get; init; }
 
@@ -21,7 +21,7 @@
 
         public DateTime CreatedAt { get; init; }
 
-        public static (Note Note, string Error) Create(Guid id, string name, string description)
+        public static (Note Note, string Error) Create(Guid id, string name, string description, DateTime dateTime)
         {
             var error = string.Empty;
 
@@ -35,7 +35,13 @@
                     error + "\nDescription of note can't be empty or longer than 20 symbols";
             }
 
-            var note = new Note(id, name, description);
+            if(dateTime == DateTime.MinValue)
+            {
+                dateTime = DateTime.UtcNow;
+            }
+            
+
+            var note = new Note(id, name, description, dateTime);
 
             return (note, error);
         }

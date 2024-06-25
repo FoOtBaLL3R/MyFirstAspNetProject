@@ -21,7 +21,7 @@ namespace MyFirstProject.DataAccess.Postgress.Repositories
                 .ToListAsync();
 
             var notes = notesEntity
-                .Select(n => Note.Create(n.Id, n.Name, n.Description).Note)
+                .Select(n => Note.Create(n.Id, n.Name, n.Description, n.CreatedAt).Note)
                 .ToList();
             return notes;
         }
