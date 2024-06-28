@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using MyFirstProject.Core.Abstractions;
 using MyFirstProject.Core.Models;
 using MyFirstProject.DataAccess.Postgress.Entities;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace MyFirstProject.DataAccess.Postgress.Repositories
 {
@@ -16,14 +18,49 @@ namespace MyFirstProject.DataAccess.Postgress.Repositories
 
         public async Task<List<Note>> Get()
         {
-            var notesEntity = await _context.Notes
-                .AsNoTracking()
-                .ToListAsync();
+            var notesEntity = _context.Notes
+                .AsNoTracking();
+            //.ToListAsync();
 
             var notes = notesEntity
                 .Select(n => Note.Create(n.Id, n.Name, n.Description, n.CreatedAt).Note)
                 .ToList();
             return notes;
+        }
+
+        public async Task<(List<Note>, int)> GetNotesBySearchFilterAndPage(string? search, string? sortOrder, string? sortItem, int page, int pageSize)
+        {
+            var notesEntity = _context.Notes
+                .Where(p => string.IsNullOrWhiteSpace(search) ||
+                p.Name.ToLower().Contains(search.ToLower()));
+
+            Expression<Func<NoteEntity, object>> selectorKey = sortItem?.ToLower() switch
+            {
+                "date" => note => note.CreatedAt,
+                "name" => note => note.Name,
+                _ => note => note.Id,
+            };
+
+            notesEntity = sortOrder == "desc"
+                ? notesEntity.OrderByDescending(selectorKey)
+                : notesEntity.OrderBy(selectorKey);
+
+            var totalCount = notesEntity.Count();
+            var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+            var notes = await notesEntity
+                .Select(n => Note.Create(n.Id, n.Name, n.Description, n.CreatedAt).Note)
+                .AsNoTracking()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+
+
+
+
+            //return Ok(new GetNotesResponse(noteDtos, totalPages));            
+
+            return (notes, totalPages);
         }
 
         public async Task<Guid> Create(Note note)
@@ -63,5 +100,7 @@ namespace MyFirstProject.DataAccess.Postgress.Repositories
 
             return id;
         }
+
+
     }
 }

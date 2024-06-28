@@ -1,8 +1,4 @@
 ﻿namespace MyFirstProject.Contracts
 {
-    public record NotesRequest(
-        string Name,
-        string Description,
-        DateTime CreatedAt);
-
+    public record NotesRequest(string? Search, string? SortItem, string? SortOrder);
 }

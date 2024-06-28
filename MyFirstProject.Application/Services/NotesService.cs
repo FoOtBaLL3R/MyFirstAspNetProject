@@ -31,5 +31,10 @@ namespace MyFirstProject.Application.Services
         {
             return await _notesRepository.Delete(id);
         }
+
+        public async Task<(List<Note>, int)> GetNotesBySearchFilterAndPage(string search, string sortOrder, string sortItem, int page, int pageSize)
+        {
+            return await _notesRepository.GetNotesBySearchFilterAndPage(search, sortOrder, sortItem, page, pageSize);
+        }
     }
 }

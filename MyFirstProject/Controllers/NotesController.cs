@@ -2,6 +2,8 @@
 using MyFirstProject.Contracts;
 using MyFirstProject.Core.Abstractions;
 using MyFirstProject.Core.Models;
+using MyFirstProject.DataAccess.Postgress.Entities;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MyFirstProject.Controllers
 {
@@ -17,23 +19,28 @@ namespace MyFirstProject.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<NotesResponse>>> GetNotes()
+        public async Task<ActionResult<List<NotesResponse>>> GetNotes([FromQuery] NotesRequest notesRequest, int page = 1, int pageSize = 3)
         {
-            var notes = await _notesService.GetAllNotes();
+            //var notes = await _notesService.GetAllNotes();
+            //var response = notes.Select(n => new NotesResponse(n.Id, n.Name, n.Description, n.CreatedAt));
 
-            var response = notes.Select(n => new NotesResponse(n.Id, n.Name, n.Description, n.CreatedAt));
+            var (notes, totalPages) = await _notesService.GetNotesBySearchFilterAndPage(notesRequest.Search, notesRequest.SortOrder, notesRequest.SortItem, page, pageSize);
+            
+            var response = notes
+                .Select(n => new NoteDto(n.Id, n.Name, n.Description, n.CreatedAt))
+                .ToList();
 
-            return Ok(response);
+            return Ok(new NotesResponse(response, totalPages));
         }
 
         [HttpPost]
-        public async Task<ActionResult<Guid>> CreateNote([FromBody] NotesRequest request)
+        public async Task<ActionResult<Guid>> CreateNote([FromBody] CreateUpdateNotesRequest requestCreate)
         {
             var (note, error) = Note.Create(
                 Guid.NewGuid(),
-                request.Name,
-                request.Description,
-                request.CreatedAt
+                requestCreate.Name,
+                requestCreate.Description,
+                requestCreate.CreatedAt
                 );
 
             if (!string.IsNullOrEmpty(error))
@@ -47,9 +54,9 @@ namespace MyFirstProject.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        public async Task<ActionResult<Guid>> UpdateNote(Guid id, [FromBody] NotesRequest request)
+        public async Task<ActionResult<Guid>> UpdateNote(Guid id, [FromBody] CreateUpdateNotesRequest requestUpdate)
         {
-            var noteId = await _notesService.UpdateNote(id, request.Name, request.Description, request.CreatedAt);
+            var noteId = await _notesService.UpdateNote(id, requestUpdate.Name, requestUpdate.Description, requestUpdate.CreatedAt);
 
             return Ok(noteId);
         }
