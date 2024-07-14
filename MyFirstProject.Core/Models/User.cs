@@ -1,7 +1,11 @@
-﻿namespace MyFirstProject.Models
+﻿using System.Xml.Linq;
+
+namespace MyFirstProject.Core.Models
 {
     public class User
     {
+        public const int MIN_PASS_LENGTH = 5;
+
         private User(Guid id, string userName, string passwordHash, string email)
         {
             Id = id;
@@ -19,7 +23,10 @@
 
         public static User Create(Guid id, string userName, string passwordHash, string email)
         {
+            var error = string.Empty;
+                        
             return new User(id, userName, passwordHash, email);
         }
+
     }
 }

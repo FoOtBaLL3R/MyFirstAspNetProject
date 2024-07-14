@@ -1,6 +1,6 @@
 ﻿using MyFirstProject.Core.Models;
 
-namespace MyFirstProject.Core.Abstractions
+namespace MyFirstProject.Application.Interfaces.Repositories
 {
     public interface INotesService
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyFirstProject.Application.Interfaces.Repositories;
 using MyFirstProject.Contracts;
-using MyFirstProject.Core.Abstractions;
 using MyFirstProject.Core.Models;
 using MyFirstProject.DataAccess.Postgress.Entities;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;

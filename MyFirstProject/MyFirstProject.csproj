@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\MyFirstProject.Infrastructure\MyFirstProject.Infrastructure.csproj" />
     <ProjectReference Include="..\MyFirstProject.Application\MyFirstProject.Application.csproj" />
     <ProjectReference Include="..\MyFirstProject.DataAccess.Postgress\MyFirstProject.DataAccess.Postgress.csproj" />
   </ItemGroup>

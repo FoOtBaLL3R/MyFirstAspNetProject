@@ -1,4 +1,4 @@
-﻿using MyFirstProject.Core.Abstractions;
+﻿using MyFirstProject.Application.Interfaces.Repositories;
 using MyFirstProject.Core.Models;
 
 namespace MyFirstProject.Application.Services

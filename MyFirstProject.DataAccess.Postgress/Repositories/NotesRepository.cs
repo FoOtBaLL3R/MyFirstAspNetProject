@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using MyFirstProject.Core.Abstractions;
 using MyFirstProject.Core.Models;
+using MyFirstProject.Application.Interfaces.Repositories;
 using MyFirstProject.DataAccess.Postgress.Entities;
 using System.Linq;
 using System.Linq.Expressions;

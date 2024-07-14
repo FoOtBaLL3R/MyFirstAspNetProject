@@ -9,7 +9,7 @@ namespace MyFirstProject.DataAccess.Postgress.Configurations
     {
         public void Configure(EntityTypeBuilder<NoteEntity> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.HasKey(n => n.Id);
 
             builder.Property(n => n.Name)
                 .HasMaxLength(Note.MAX_NAME_LENGTH)
@@ -21,6 +21,10 @@ namespace MyFirstProject.DataAccess.Postgress.Configurations
 
             builder.Property(n => n.CreatedAt)
                 .IsRequired();
+
+            builder.HasOne(n => n.User)
+                .WithMany(u => u.Notes)
+                .HasForeignKey(n => n.UserId);
         }
     }
 }

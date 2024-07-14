@@ -10,5 +10,9 @@ namespace MyFirstProject.DataAccess.Postgress.Entities
         public string Description { get; set; }
 
         public DateTime CreatedAt { get; set; }
+
+        public Guid UserId { get; set; }
+
+        public UserEntity? User { get; set; }
     }
 }
